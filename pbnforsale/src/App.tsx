@@ -12,27 +12,43 @@ import BlogList from './pages/BlogList';
 import BlogPost from './pages/BlogPost';
 import PageSpeedChecker from './pages/PageSpeedChecker';
 import Chatbot from './components/Chatbot';
+import SEOHead from './components/SEOHead';
+
+import { LanguageProvider } from './context/LanguageContext';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-dark-900">
-        <Header />
-        <ScrollToTop />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/portfolio" element={<Portfolio />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/tools/pagespeed-checker" element={<PageSpeedChecker />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Chatbot />
-      </div>
+      <LanguageProvider>
+        <div className="min-h-screen bg-dark-900">
+          <SEOHead />
+          <Header />
+          <ScrollToTop />
+          <main>
+            <Routes>
+              {/* Global / English Routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/tools/pagespeed-checker" element={<PageSpeedChecker />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+
+              {/* Dedicated Indonesian Regional Routes (Targeting Google Indonesia / google.co.id) */}
+              <Route path="/id" element={<Home />} />
+              <Route path="/id/portfolio" element={<Portfolio />} />
+              <Route path="/id/blog" element={<BlogList />} />
+              <Route path="/id/blog/:slug" element={<BlogPost />} />
+              <Route path="/id/tools/pagespeed-checker" element={<PageSpeedChecker />} />
+              <Route path="/id/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/id/terms-and-conditions" element={<TermsAndConditions />} />
+            </Routes>
+          </main>
+          <Footer />
+          <Chatbot />
+        </div>
+      </LanguageProvider>
     </Router>
   );
 }

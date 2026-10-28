@@ -1,21 +1,23 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, Shield, Zap, Clock, TrendingUp, CreditCard, Bitcoin } from 'lucide-react';
-
-const trustBadges = [
-  { icon: TrendingUp, label: 'DA 50+ Aged Domains' },
-  { icon: Shield, label: '100% Google Safe' },
-  { icon: Zap, label: 'Permanent Indexed Links' },
-  { icon: Clock, label: 'Fast 48hr Delivery' },
-];
-
-const paymentMethods = [
-  { icon: CreditCard, label: 'Card' },
-  { icon: null, label: 'PayPal', custom: 'PP' },
-  { icon: Bitcoin, label: 'Crypto' },
-];
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
+
+  const trustBadges = [
+    { icon: TrendingUp, label: t('trust.da') },
+    { icon: Shield, label: t('trust.safe') },
+    { icon: Zap, label: t('trust.indexed') },
+    { icon: Clock, label: t('trust.delivery') },
+  ];
+
+  const paymentMethods = [
+    { icon: CreditCard, label: 'Card' },
+    { icon: null, label: 'PayPal', custom: 'PP' },
+    { icon: Bitcoin, label: 'Crypto (USDT)' },
+  ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -60,24 +62,23 @@ export default function Hero() {
             <div className="animate-on-scroll opacity-0" style={{ animationDelay: '0.1s' }}>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-sm font-medium">
                 <span className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
-                Trusted Digital Marketing Since 2014
+                {t('hero.badge')}
               </span>
             </div>
 
             {/* Main Headline */}
             <div className="animate-on-scroll opacity-0" style={{ animationDelay: '0.2s' }}>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
-                Drive High Rankings with{' '}
-                <span className="text-gradient">Premium Backlinks</span>{' '}
-                That Convert
+                {t('hero.title_start')}
+                <span className="text-gradient">{t('hero.title_gradient')}</span>
+                {t('hero.title_end')}
               </h1>
             </div>
 
             {/* Subheadline */}
             <div className="animate-on-scroll opacity-0" style={{ animationDelay: '0.3s' }}>
               <p className="text-lg sm:text-xl text-gray-300 leading-relaxed max-w-xl">
-                <strong className="text-white">Nexalogic Technologies</strong> is the world's safest backlink service company. 
-                Boost your website rankings, bring in high-quality traffic, and gain the visibility your business needs to succeed.
+                {t('hero.desc')}
               </p>
             </div>
 
@@ -100,16 +101,16 @@ export default function Hero() {
             <div className="animate-on-scroll opacity-0 flex flex-col sm:flex-row gap-4" style={{ animationDelay: '0.5s' }}>
               <a
                 href="#packages"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-dark-900 bg-gradient-to-r from-gold-500 to-gold-600 rounded-xl hover:from-gold-400 hover:to-gold-500 transition-all shadow-glow hover:shadow-glow-lg"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-dark-900 bg-gradient-to-r from-gold-500 to-gold-600 rounded-xl hover:from-gold-400 hover:to-gold-500 transition-all shadow-glow hover:shadow-glow-lg font-bold"
               >
-                View Backlinks For Sale
+                {t('hero.cta_buy')}
                 <ArrowRight className="w-5 h-5" />
               </a>
               <a
                 href="#packages"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white border-2 border-white/20 rounded-xl hover:bg-white/5 transition-all"
               >
-                Link Building Packages
+                {t('hero.cta_packages')}
               </a>
             </div>
 

@@ -12,9 +12,9 @@ const footerLinks = {
     { label: 'Buy Backlinks', href: '#packages' },
     { label: 'SEO Agency Links', href: '#packages' },
     { label: 'Link Building Packages', href: '#packages' },
-    { label: 'SEO Services', href: '#packages' },
-    { label: 'Portfolio', href: '/portfolio' },
+    { label: 'Case Studies', href: '/portfolio' },
     { label: 'Blog', href: '/blog' },
+    { label: 'Rankpilot', href: 'https://rankpilot.nexalogic.site/' },
   ],
   company: [
     { label: 'Contact Us', href: '#contact' },

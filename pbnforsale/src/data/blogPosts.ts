@@ -1,4 +1,5 @@
-import blogMarkdown from './seo-authority-blog-pack-2026.md?raw';
+import blogMarkdownEn from './seo-authority-blog-pack-2026.md?raw';
+import blogMarkdownId from './seo-authority-blog-pack-indonesia-2026.md?raw';
 
 function slugify(s: string) {
   return s
@@ -7,29 +8,49 @@ function slugify(s: string) {
     .replace(/(^-|-$)/g, '');
 }
 
-// split at separator lines
-const sections = blogMarkdown
-  .split(/={5,}/g)
-  .map((s) => s.trim())
-  .filter((s) => s && s.startsWith('#'));
+function parseMarkdownPack(markdown: string, lang: 'en' | 'id'): Post[] {
+  const sections = markdown
+    .split(/={5,}/g)
+    .map((s) => s.trim())
+    .filter((s) => s && /^#\s*\d+\./.test(s));
 
-interface Post {
+  return sections.map((sec) => {
+    const lines = sec.split('\n');
+    const titleLine = lines[0] || '';
+    const title = titleLine.replace(/^#\s*\d+\.\s*/, '').trim();
+    const rest = lines.slice(1).join('\n').trim();
+    return {
+      title,
+      slug: slugify(title),
+      content: rest,
+      lang,
+    };
+  });
+}
+
+export interface Post {
   title: string;
   slug: string;
   content: string;
+  lang: 'en' | 'id';
 }
 
-const posts: Post[] = sections.map((sec) => {
-  const lines = sec.split('\n');
-  const titleLine = lines[0] || '';
-  const title = titleLine.replace(/^#\s*\d+\.\s*/, '').trim();
-  // everything after first blank line (skip two lines if necessary)
-  const rest = lines.slice(1).join('\n').trim();
-  return {
-    title,
-    slug: slugify(title),
-    content: rest,
-  };
-});
+export const postsEn: Post[] = parseMarkdownPack(blogMarkdownEn, 'en');
+export const postsId: Post[] = parseMarkdownPack(blogMarkdownId, 'id');
 
-export default posts;
+const allPosts: Post[] = [...postsEn, ...postsId];
+
+export function getPostsByLanguage(lang: string): Post[] {
+  if (lang === 'id') return postsId;
+  return postsEn;
+}
+
+export function getPostBySlug(slug: string, lang?: string): Post | undefined {
+  if (lang === 'id') {
+    const idPost = postsId.find((p) => p.slug === slug);
+    if (idPost) return idPost;
+  }
+  return allPosts.find((p) => p.slug === slug);
+}
+
+export default allPosts;

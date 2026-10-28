@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Homepage -->
+  <url>
+    <loc>https://nexalogic.site/</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nexalogic.site/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id</loc>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://nexalogic.site/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Portfolio / Case Studies -->
+  <url>
+    <loc>https://nexalogic.site/portfolio</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/portfolio" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id/portfolio" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/portfolio</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/portfolio" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id/portfolio" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Blog Index -->
+  <url>
+    <loc>https://nexalogic.site/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/blog" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id/blog" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/blog</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://nexalogic.site/blog" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://nexalogic.site/id/blog" />
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Tools -->
+  <url>
+    <loc>https://nexalogic.site/tools/pagespeed-checker</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/tools/pagespeed-checker</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Indonesian High-Intent SEO Articles -->
+  <url>
+    <loc>https://nexalogic.site/id/blog/jasa-backlink-pbn-indonesia-terbaik-panduan-lengkap-menaikkan-da-dr-ranking-google-2026</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/blog/cara-memilih-backlink-dofollow-berkualitas-tanpa-takut-kena-deindex-google</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/blog/pbn-vs-guest-post-mana-yang-lebih-cepat-membawa-website-ke-halaman-1-google</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/id/blog/strategi-link-building-untuk-niche-kompetitif-igaming-fintech-crypto</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- English Authority Articles -->
+  <url>
+    <loc>https://nexalogic.site/blog/more-than-just-pbn-links-becoming-a-complete-link-building-partner</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/blog/googles-helpful-content-update-what-changed-and-how-to-protect-your-website</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/blog/why-google-wont-index-your-pages-and-how-to-fix-it</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://nexalogic.site/blog/googles-link-spam-updates-what-still-works</loc>
+    <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+</urlset>
