@@ -120,7 +120,7 @@ export default function Portfolio() {
             SEO Case Studies & <span className="text-gradient">Ranking Proof</span>
           </h1>
           <p className="mt-6 text-base sm:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Real data from competitive campaigns. Discover how our 12,000+ domain inventory, strict outbound link control, and high DA/DR placements consistently move competitive search rankings.
+            Real data from competitive campaigns. Discover how our extensive aged domain inventory, strict outbound link control, and high DA/DR placements consistently move competitive search rankings.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
@@ -235,6 +235,9 @@ export default function Portfolio() {
                     <img
                       src={study.image}
                       alt={study.title}
+                      width={600}
+                      height={350}
+                      decoding="async"
                       className="w-full h-full object-cover"
                       loading="lazy"
                     />

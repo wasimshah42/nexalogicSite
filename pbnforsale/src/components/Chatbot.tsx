@@ -14,6 +14,7 @@ import {
   FileText
 } from 'lucide-react';
 import { sendContactMessage } from '../lib/contactService';
+import { trackUserEvent } from '../lib/visitorAnalytics';
 
 import { useLanguage } from '../context/LanguageContext';
 
@@ -40,6 +41,9 @@ interface OrderState {
   targetUrl?: string;
   targetKeywords?: string;
   language: 'id' | 'en' | 'km';
+  visitorEmail?: string;
+  visitorPhone?: string;
+  visitorTelegram?: string;
 }
 
 export const Chatbot: React.FC = () => {
@@ -67,10 +71,10 @@ export const Chatbot: React.FC = () => {
       id: 'sarah-intro',
       sender: 'bot',
       text: siteLanguage === 'km'
-        ? "👋 សួស្តី! ខ្ញុំគឺ **Sarah**, Senior Technical Sales Director នៅ Nexalogic។\n\nខ្ញុំគ្រប់គ្រងបណ្តាញ **12,000+ premium aged domains** (PBNs, EDUs & Guest Posts) ជាមួយនឹងការគ្រប់គ្រង Outbound Link យ៉ាងហ្មត់ចត់។\n\nដើម្បីទទួលបានកម្លាំង Ranking ខ្ពស់បំផុត តើគេហទំព័ររបស់អ្នកស្ថិតក្នុង **Niche អ្វីដែរ?** *(យើងទទួល Casino, Crypto, E-commerce, Gray & General)*"
+        ? "👋 សួស្តី! ខ្ញុំគឺ **Sarah**, Senior Technical Sales Director នៅ Nexalogic។\n\nខ្ញុំគ្រប់គ្រងបណ្តាញ **premium aged domains ដ៏ធំទូលាយ** (PBNs, EDUs & Guest Posts) ជាមួយនឹងការគ្រប់គ្រង Outbound Link យ៉ាងហ្មត់ចត់។\n\nដើម្បីទទួលបានកម្លាំង Ranking ខ្ពស់បំផុត តើគេហទំព័ររបស់អ្នកស្ថិតក្នុង **Niche អ្វីដែរ?** *(យើងទទួល Casino, Crypto, E-commerce, Gray & General)*"
         : siteLanguage === 'id'
-        ? "👋 Halo! Saya **Sarah**, Senior Technical Sales Director di Nexalogic.\n\nSaya mengelola private network **12.000+ domain berumur premium** (PBN, EDU & Guest Post) dengan kontrol link keluar yang ketat.\n\nUntuk mendongkrak peringkat website Anda, **apa niche website Anda saat ini?** *(Kami menerima Casino, Slot, Crypto, Gray, dan General)*"
-        : "👋 Hi! I'm **Sarah**, Senior Technical Sales Director at Nexalogic.\n\nI manage our private network of **12,000+ premium aged domains** (high-authority PBNs, EDUs & curated guest posts) with strict outbound link control.\n\nTo get you the optimal ranking power, **what niche is your website in?** *(We accept Casino, Crypto, E-commerce, Gray, & General niches)*",
+        ? "👋 Halo! Saya **Sarah**, Senior Technical Sales Director di Nexalogic.\n\nSaya mengelola private network **domain berumur premium yang luas** (PBN, EDU & Guest Post) dengan kontrol link keluar yang ketat.\n\nUntuk mendongkrak peringkat website Anda, **apa niche website Anda saat ini?** *(Kami menerima Casino, Slot, Crypto, Gray, dan General)*"
+        : "👋 Hi! I'm **Sarah**, Senior Technical Sales Director at Nexalogic.\n\nI manage our private network of **premium aged domains** (high-authority PBNs, EDUs & curated guest posts) with strict outbound link control.\n\nTo get you the optimal ranking power, **what niche is your website in?** *(We accept Casino, Crypto, E-commerce, Gray, & General niches)*",
       timestamp: formatTime(),
       options: [
         { label: 'Casino / iGaming / Betting', value: 'Casino / iGaming' },
@@ -126,16 +130,42 @@ export const Chatbot: React.FC = () => {
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setIsSending(true);
+    trackUserEvent('chat_message', 'visitor', { text: textToSend, step: orderState.step });
 
-    // Forward interaction inquiry automatically to sales inbox sales@nexalogic.site
+    // Extract contact information if provided by the visitor
+    const emailFound = extractEmail(textToSend);
+    const phoneFound = extractPhone(textToSend);
+    const telegramFound = extractTelegram(textToSend);
+
+    const updatedEmail = emailFound || orderState.visitorEmail;
+    const updatedPhone = phoneFound || orderState.visitorPhone;
+    const updatedTelegram = telegramFound || orderState.visitorTelegram;
+
+    if (emailFound || phoneFound || telegramFound) {
+      setOrderState((prev) => ({
+        ...prev,
+        visitorEmail: updatedEmail,
+        visitorPhone: updatedPhone,
+        visitorTelegram: updatedTelegram,
+      }));
+    }
+
+    // Forward interaction inquiry automatically to database & sales inbox
     try {
-      const emailFound = extractEmail(textToSend);
-      if (emailFound || textToSend.length > 25 || orderState.step === 'ORDER_DETAILS') {
+      if (emailFound || phoneFound || telegramFound || textToSend.length > 20 || orderState.step === 'ORDER_DETAILS') {
+        const contactDetailDesc = [
+          updatedEmail ? `Email: ${updatedEmail}` : null,
+          updatedPhone ? `Phone: ${updatedPhone}` : null,
+          updatedTelegram ? `Telegram: ${updatedTelegram}` : null,
+        ].filter(Boolean).join(' | ');
+
         sendContactMessage({
-          name: 'Sarah Chat Lead',
-          email: emailFound || 'sales-lead@nexalogic.site',
-          message: `[Live Sarah Chat] Step: ${orderState.step} | Lang: ${activeLang}\nMessage: ${textToSend}`,
-          source: 'Live Chat with Sarah',
+          name: updatedEmail ? updatedEmail.split('@')[0] : (updatedTelegram || 'Website Chat Visitor'),
+          email: updatedEmail || '',
+          phone: updatedPhone || '',
+          telegram: updatedTelegram || '',
+          message: `[Live Chat Interaction]\nStep: ${orderState.step} | Lang: ${activeLang}\nContact Info: ${contactDetailDesc || '[Visitor chatting in real-time]'}\n\nVisitor Message:\n${textToSend}`,
+          source: 'Live Chat Assistant',
         }).catch((err) => console.warn('Email auto-dispatch log:', err));
       }
     } catch (e) {
@@ -164,9 +194,9 @@ export const Chatbot: React.FC = () => {
       lower.includes('show domains')
     ) {
       const replyText = isKhmer
-        ? "ដើម្បីការពារបណ្តាញ និងអតិថិជនពី footprint របស់ Google យើងមិនដែលចែករំលែក Database ទាំង 12,000 domains ជាសាធារណៈឡើយ។\n\nទោះជាយ៉ាងណា ខ្ញុំអាចផ្ញើ **Sample Batch 3–5 URLs** ជូនអ្នកដើម្បីពិនិត្យផ្ទៀងផ្ទាត់ Ahrefs & Moz ដោយខ្លួនឯង។ តើអ្នកចង់មើល Sample ដែរឬទេ?"
+        ? "ដើម្បីការពារបណ្តាញ និងអតិថិជនពី footprint របស់ Google យើងមិនដែលចែករំលែក Database ទាំងអស់ជាសាធារណៈឡើយ។\n\nទោះជាយ៉ាងណា ខ្ញុំអាចផ្ញើ **Sample Batch 3–5 URLs** ជូនអ្នកដើម្បីពិនិត្យផ្ទៀងផ្ទាត់ Ahrefs & Moz ដោយខ្លួនឯង។ តើអ្នកចង់មើល Sample ដែរឬទេ?"
         : isIndo
-        ? "Untuk melindungi network dan klien kami dari footprint Google, kami tidak pernah membagikan database full 12,000 domain secara terbuka bosku.\n\nTapi tenang, saya bisa kirimkan **sample batch 3–5 URL** agar bosku bisa cek langsung metrik Ahrefs & Moz-nya sendiri. Mau saya siapkan sample-nya kak?"
+        ? "Untuk melindungi network dan klien kami dari footprint Google, kami tidak pernah membagikan database full domain secara terbuka bosku.\n\nTapi tenang, saya bisa kirimkan **sample batch 3–5 URL** agar bosku bisa cek langsung metrik Ahrefs & Moz-nya sendiri. Mau saya siapkan sample-nya kak?"
         : "To protect our network and our clients from Google footprints, we never share the full database. However, I can send you a **sample batch of 3–5 URLs** so you can verify the Ahrefs and Moz metrics yourself.\n\nWould you like to review a sample batch?";
 
       setMessages((prev) => [
@@ -336,11 +366,17 @@ export const Chatbot: React.FC = () => {
     if (orderState.step === 'ORDER_DETAILS' || (hasUrl && (orderState.selectedPackage || lower.includes('keyword') || lower.includes('anchor')))) {
       setOrderState((prev) => ({ ...prev, step: 'CLOSED' }));
 
-      // Dispatch order details directly to sales@nexalogic.site
+      const finalEmail = extractEmail(text) || orderState.visitorEmail || '';
+      const finalPhone = extractPhone(text) || orderState.visitorPhone || '';
+      const finalTelegram = extractTelegram(text) || orderState.visitorTelegram || '';
+
+      // Dispatch order details directly to database & sales@nexalogic.site
       sendContactMessage({
-        name: 'Confirmed Buyer via Sarah',
-        email: extractEmail(text) || 'buyer-order@nexalogic.site',
-        message: `[CONFIRMED ORDER]\nPackage: ${orderState.selectedPackage || 'Custom Package Selected'}\nClient Details:\n${text}`,
+        name: finalEmail ? finalEmail.split('@')[0] : (finalTelegram || 'Confirmed Buyer via Chat'),
+        email: finalEmail,
+        phone: finalPhone,
+        telegram: finalTelegram,
+        message: `[CONFIRMED ORDER VIA CHATBOT]\nPackage: ${orderState.selectedPackage || 'Custom Package Selected'}\nTarget Details:\n${text}`,
         source: 'Sarah 4-Step Closing System',
       }).catch((e) => console.warn(e));
 
@@ -513,7 +549,10 @@ export const Chatbot: React.FC = () => {
       {/* Trigger Button */}
       {!open && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setOpen(true);
+            trackUserEvent('chat_open');
+          }}
           className="group flex items-center gap-3 px-4 py-3.5 rounded-full bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-bold shadow-glow hover:shadow-glow-lg hover:scale-105 transition-all duration-300"
           aria-label="Open support chat"
         >
@@ -551,7 +590,7 @@ export const Chatbot: React.FC = () => {
                 </h3>
                 <p className="text-xs text-gray-400 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  Nexalogic 12,000+ Domain Inventory
+                  Nexalogic Premium Domain Network
                 </p>
               </div>
             </div>
@@ -675,6 +714,7 @@ export const Chatbot: React.FC = () => {
           <div className="px-3 py-2 bg-dark-800/90 border-t border-dark-700 flex gap-1.5 overflow-x-auto no-scrollbar text-xs">
             <button
               onClick={() => handleSend('Can I see a 3-5 sample batch of URLs?')}
+              aria-label="Request sample batch of URLs"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-dark-700 hover:bg-gold-500/20 border border-white/10 hover:border-gold-500/40 text-gray-300 hover:text-gold-400 transition-all whitespace-nowrap"
             >
               <FileText className="w-3.5 h-3.5 text-gold-500" />
@@ -682,6 +722,7 @@ export const Chatbot: React.FC = () => {
             </button>
             <button
               onClick={() => handleSend('What is your indexation rate?')}
+              aria-label="Inquire about indexation rate"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-dark-700 hover:bg-gold-500/20 border border-white/10 hover:border-gold-500/40 text-gray-300 hover:text-gold-400 transition-all whitespace-nowrap"
             >
               <TrendingUp className="w-3.5 h-3.5 text-gold-500" />
@@ -689,6 +730,7 @@ export const Chatbot: React.FC = () => {
             </button>
             <button
               onClick={() => handleSend('Can I get a discount for bulk orders?')}
+              aria-label="Ask about bulk pricing discounts"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-dark-700 hover:bg-gold-500/20 border border-white/10 hover:border-gold-500/40 text-gray-300 hover:text-gold-400 transition-all whitespace-nowrap"
             >
               <PackageCheck className="w-3.5 h-3.5 text-gold-500" />
@@ -696,6 +738,7 @@ export const Chatbot: React.FC = () => {
             </button>
             <button
               onClick={() => handleSend('Show me all prices')}
+              aria-label="Show all backlink prices"
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-dark-700 hover:bg-gold-500/20 border border-white/10 hover:border-gold-500/40 text-gray-300 hover:text-gold-400 transition-all whitespace-nowrap"
             >
               <Globe2 className="w-3.5 h-3.5 text-gold-500" />
@@ -715,6 +758,7 @@ export const Chatbot: React.FC = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              aria-label="Chat message input"
               placeholder="Tell Sarah your niche or website URL..."
               className="flex-1 bg-dark-800 border border-dark-600 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-gold-500"
             />
@@ -741,6 +785,22 @@ function formatTime(): string {
 function extractEmail(text: string): string | null {
   const match = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   return match ? match[0] : null;
+}
+
+function extractPhone(text: string): string | null {
+  const match = text.match(/(?:\+?\d{1,4}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,5}/);
+  if (match) {
+    const digitsOnly = match[0].replace(/[^0-9]/g, '');
+    if (digitsOnly.length >= 8 && digitsOnly.length <= 15) {
+      return match[0].trim();
+    }
+  }
+  return null;
+}
+
+function extractTelegram(text: string): string | null {
+  const match = text.match(/(?:t\.me\/|@)([a-zA-Z0-9_]{5,32})/i);
+  return match ? '@' + match[1] : null;
 }
 
 function formatMarkdown(text: string): React.ReactNode {

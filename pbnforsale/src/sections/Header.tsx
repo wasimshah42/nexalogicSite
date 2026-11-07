@@ -48,6 +48,11 @@ export default function Header() {
       if (href === '/') return '/id';
       if (!href.startsWith('/id')) return `/id${href}`;
     }
+    if (language === 'km') {
+      if (href.startsWith('/#')) return `/km#${href.slice(2)}`;
+      if (href === '/') return '/km';
+      if (!href.startsWith('/km')) return `/km${href}`;
+    }
     return href;
   };
 
@@ -62,7 +67,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link to={language === 'id' ? '/id' : '/'} className="flex items-center gap-2">
+          <Link to={language === 'id' ? '/id' : language === 'km' ? '/km' : '/'} className="flex items-center gap-2">
             <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-br from-gold-500 to-gold-600 flex items-center justify-center">
               <span className="text-dark-900 font-bold text-lg lg:text-xl">N</span>
             </div>
@@ -137,6 +142,7 @@ export default function Header() {
                 <Button
                   variant="outline"
                   size="sm"
+                  aria-label="Change Language and Region"
                   className="bg-dark-800 border-dark-600 text-gray-200 hover:text-white hover:bg-dark-700 text-xs px-2 sm:px-3 h-8 sm:h-9 gap-1.5 focus-visible:ring-0"
                 >
                   <Globe className="w-3.5 h-3.5 text-gold-500" />
@@ -202,6 +208,7 @@ export default function Header() {
               href="https://t.me/smartlinker786"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Contact Nexalogic on Telegram"
               className="text-gray-300 hover:text-white transition-colors"
             >
               <Send className="w-5 h-5" />
@@ -210,6 +217,7 @@ export default function Header() {
               href="https://web.facebook.com/profile.php?id=61588156805039"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Nexalogic on Facebook"
               className="text-gray-300 hover:text-white transition-colors"
             >
               <Facebook className="w-5 h-5" />
@@ -218,7 +226,7 @@ export default function Header() {
             {/* Mobile Menu */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild className="lg:hidden">
-                <Button variant="ghost" size="icon" className="text-white">
+                <Button variant="ghost" size="icon" className="text-white" aria-label="Open mobile navigation menu">
                   <Menu className="w-6 h-6" />
                 </Button>
               </SheetTrigger>

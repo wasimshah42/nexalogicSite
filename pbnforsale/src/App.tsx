@@ -43,6 +43,24 @@ function App() {
               <Route path="/id/tools/pagespeed-checker" element={<PageSpeedChecker />} />
               <Route path="/id/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/id/terms-and-conditions" element={<TermsAndConditions />} />
+
+              {/* Dedicated Cambodian Regional Routes (Targeting Cambodia / Khmer) */}
+              <Route path="/km" element={<Home />} />
+              <Route path="/km/portfolio" element={<Portfolio />} />
+              <Route path="/km/blog" element={<BlogList />} />
+              <Route path="/km/blog/:slug" element={<BlogPost />} />
+              <Route path="/km/tools/pagespeed-checker" element={<PageSpeedChecker />} />
+              <Route path="/km/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/km/terms-and-conditions" element={<TermsAndConditions />} />
+
+              {/* Dedicated Cambodia Regional Routes (Khmer / Cambodia Market) */}
+              <Route path="/km" element={<Home />} />
+              <Route path="/km/portfolio" element={<Portfolio />} />
+              <Route path="/km/blog" element={<BlogList />} />
+              <Route path="/km/blog/:slug" element={<BlogPost />} />
+              <Route path="/km/tools/pagespeed-checker" element={<PageSpeedChecker />} />
+              <Route path="/km/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/km/terms-and-conditions" element={<TermsAndConditions />} />
             </Routes>
           </main>
           <Footer />

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexalogic Live Visitor Radar</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0c;
+      color: #e2e8f0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .badge-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; color: #0a0a0c;
+    }
+    h1 { font-size: 20px; font-weight: 700; color: #fff; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399; font-size: 12px; font-weight: 600;
+      padding: 6px 12px; border-radius: 9999px;
+    }
+    .pulse-dot {
+      width: 8px; height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #121217;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .stat-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 6px; }
+    .stat-card .val { font-size: 28px; font-weight: 800; color: #f59e0b; }
+    .card {
+      background: #121217;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-header h2 { font-size: 16px; font-weight: 600; color: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px 16px;
+      color: #94a3b8; font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #cbd5e1;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 600;
+    }
+    .badge-page { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-direct { background: rgba(148, 163, 184, 0.1); color: #cbd5e1; }
+    .badge-google { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .btn {
+      background: #f59e0b; color: #0a0a0c; font-weight: 700;
+      border: none; padding: 8px 16px; border-radius: 8px;
+      cursor: pointer; font-size: 12px; transition: all 0.2s;
+    }
+    .btn:hover { background: #fbbf24; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="badge-icon">N</div>
+        <div>
+          <h1>Nexalogic Live Visitor Radar</h1>
+          <p style="font-size: 12px; color: #94a3b8;">Real-Time Global Traffic & Telegram Alert System</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <div class="status-pill">
+          <span class="pulse-dot"></span>
+          Live Radar Active
+        </div>
+        <button class="btn" onclick="loadStats()">Refresh</button>
+      </div>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Logged Visitors</h3>
+        <div class="val" id="totalCount">...</div>
+      </div>
+      <div class="stat-card">
+        <h3>Top Country</h3>
+        <div class="val" id="topCountry">...</div>
+      </div>
+      <div class="stat-card">
+        <h3>Primary Target</h3>
+        <div class="val" style="color: #34d399;">Indonesia 🇮🇩</div>
+      </div>
+      <div class="stat-card">
+        <h3>Telegram Alerts</h3>
+        <div class="val" style="color: #60a5fa;">Active (24/7)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Recent Website Visitors</h2>
+        <span style="font-size: 12px; color: #94a3b8;">Showing latest 50 sessions</span>
+      </div>
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Location</th>
+              <th>ISP / Network</th>
+              <th>Landed Page</th>
+              <th>Referrer Source</th>
+              <th>Device</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody id="visitorsTable">
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 32px; color: #64748b;">Loading visitor telemetry...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadStats() {
+      try {
+        const res = await fetch('/track-visitor.php');
+        const data = await res.json();
+        
+        document.getElementById('totalCount').innerText = data.count || 0;
+        
+        const visitors = data.visitors || [];
+        const countries = {};
+        visitors.forEach(v => {
+          countries[v.country] = (countries[v.country] || 0) + 1;
+        });
+
+        let topCountry = 'None';
+        let maxCount = 0;
+        for (const [c, cnt] of Object.entries(countries)) {
+          if (cnt > maxCount) {
+            maxCount = cnt;
+            topCountry = c;
+          }
+        }
+        document.getElementById('topCountry').innerText = topCountry;
+
+        const tbody = document.getElementById('visitorsTable');
+        if (visitors.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 32px; color: #94a3b8;">No visitors logged yet. Land on nexalogic.site to test your first visitor ping!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = visitors.map(v => {
+          const isGoogle = (v.referrer || '').toLowerCase().includes('google');
+          const refBadge = isGoogle ? `<span class="badge badge-google">${v.referrer}</span>` : `<span class="badge badge-direct">${v.referrer}</span>`;
+          return `
+            <tr>
+              <td style="color: #94a3b8; font-size: 11px;">${v.timestamp}</td>
+              <td style="font-weight: 600; color: #fff;">${v.city}, ${v.country} (${v.countryCode})</td>
+              <td style="font-family: monospace; font-size: 12px; color: #38bdf8;">${v.isp}</td>
+              <td><span class="badge badge-page">${v.page}</span></td>
+              <td>${refBadge}</td>
+              <td style="font-size: 12px;">${v.device}</td>
+              <td style="font-family: monospace; font-size: 11px; color: #64748b;">${v.ip}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    loadStats();
+    // Auto-refresh every 20 seconds
+    setInterval(loadStats, 20000);
+  </script>
+</body>
+</html>

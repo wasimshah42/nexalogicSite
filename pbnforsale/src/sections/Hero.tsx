@@ -4,7 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const trustBadges = [
     { icon: TrendingUp, label: t('trust.da') },
@@ -13,11 +13,23 @@ export default function Hero() {
     { icon: Clock, label: t('trust.delivery') },
   ];
 
-  const paymentMethods = [
-    { icon: CreditCard, label: 'Card' },
-    { icon: null, label: 'PayPal', custom: 'PP' },
-    { icon: Bitcoin, label: 'Crypto (USDT)' },
-  ];
+  const paymentMethods = language === 'id' 
+    ? [
+        { icon: null, label: 'QRIS / Transfer Bank', custom: 'QR' },
+        { icon: Bitcoin, label: 'Crypto (USDT)' },
+        { icon: CreditCard, label: 'Kartu Kredit' },
+      ]
+    : language === 'km'
+    ? [
+        { icon: null, label: 'ABA Bank', custom: 'ABA' },
+        { icon: Bitcoin, label: 'Crypto (USDT)' },
+        { icon: null, label: 'PayPal', custom: 'PP' },
+      ]
+    : [
+        { icon: CreditCard, label: 'Card' },
+        { icon: null, label: 'PayPal', custom: 'PP' },
+        { icon: Bitcoin, label: 'Crypto (USDT)' },
+      ];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -45,11 +57,18 @@ export default function Hero() {
     >
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/hero-bg.jpg"
-          alt="SEO Background"
-          className="w-full h-full object-cover opacity-60"
-        />
+        <picture>
+          <source srcSet="/hero-bg.webp" type="image/webp" />
+          <img
+            src="/hero-bg.jpg"
+            alt="Nexalogic Premium PBN Backlinks Network"
+            width={1344}
+            height={768}
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover opacity-60"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-b from-dark-900/80 via-dark-900/70 to-dark-900" />
       </div>
 

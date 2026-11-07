@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../Claude-Seo/claude-seo"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

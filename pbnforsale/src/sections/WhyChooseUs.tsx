@@ -118,11 +118,18 @@ export default function WhyChooseUs() {
           <div className="space-y-8 animate-on-scroll opacity-0" style={{ animationDelay: '0.4s' }}>
             <div className="relative">
               <div className="absolute -inset-4 bg-gradient-to-r from-gold-500/10 to-gold-600/10 rounded-3xl blur-2xl" />
-              <img
-                src="/seo-growth.jpg"
-                alt="SEO Growth"
-                className="relative w-full rounded-2xl border border-dark-600"
-              />
+              <picture>
+                <source srcSet="/seo-growth.webp" type="image/webp" />
+                <img
+                  src="/seo-growth.jpg"
+                  alt="SEO Ranking Growth with Nexalogic Authority Backlinks"
+                  width={1184}
+                  height={864}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative w-full rounded-2xl border border-dark-600"
+                />
+              </picture>
             </div>
 
             {/* Highlight Stats */}

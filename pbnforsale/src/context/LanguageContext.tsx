@@ -42,7 +42,7 @@ export const translations: Record<LanguageCode, Record<string, string>> = {
     'trust.delivery': 'Fast 48hr Delivery',
 
     // Packages Section
-    'pkg.badge': 'Nexalogic Wholesale Pricing • 12,000+ Domain Inventory',
+    'pkg.badge': 'Nexalogic Wholesale Pricing • Extensive Domain Network',
     'pkg.title': 'Choose Your PBN & Backlink Package',
     'pkg.desc': 'Direct agency wholesale rates with strict outbound link control, natural drip-feeding, and a verified 95%+ indexation rate. Accept all niches including Casino & Crypto.',
     'pkg.tab_all': 'All Packages',
@@ -90,7 +90,7 @@ export const translations: Record<LanguageCode, Record<string, string>> = {
     'trust.delivery': 'Pengiriman Cepat 48 Jam',
 
     // Packages Section
-    'pkg.badge': 'Harga Grosir Nexalogic • Jaringan 12.000+ Domain Otoritas',
+    'pkg.badge': 'Harga Grosir Nexalogic • Jaringan Luas Domain Otoritas',
     'pkg.title': 'Pilih Paket PBN & Backlink Pilihan Anda',
     'pkg.desc': 'Tarif wholesale langsung untuk agensi dengan kontrol outbound link ketat, drip-feed alami, dan rasio indeksasi 95%+. Menerima semua niche termasuk Judi Online / Casino, Crypto, dan Slot.',
     'pkg.tab_all': 'Semua Paket',
@@ -126,10 +126,10 @@ export const translations: Record<LanguageCode, Record<string, string>> = {
     'hero.title_start': 'ជំរុញចំណាត់ថ្នាក់ខ្ពស់ជាមួយ ',
     'hero.title_gradient': 'Backlinks លំដាប់ខ្ពស់',
     'hero.title_end': ' ដែលនាំមកនូវផលពិតប្រាកដ',
-    'hero.desc': 'Nexalogic Technologies គឺជាក្រុមហ៊ុនផ្តល់សេវា backlink ដែលមានសុវត្ថិភាពបំផុតលើពិភពលោក។ បង្កើនចំណាត់ថ្នាក់គេហទំព័ររបស់អ្នក និងទាក់ទាញអតិថិជនសក្តានុពល។',
+    'hero.desc': 'Nexalogic Technologies គឺជាក្រុមហ៊ុនផ្តល់សេវា backlink ដែលមានសុវត្ថិភាពបំផុតលើពិភពលោក។ បង្កើនចំណាត់ថ្នាក់គេហទំព័ររបស់អ្នក និងទាក់ទាញអតិថិជនសក្តានុពល។ ទទួលស្គាល់ niche Casino, iGaming & Crypto ។',
     'hero.cta_buy': 'មើលបញ្ជី Backlinks សម្រាប់លក់',
     'hero.cta_packages': 'កញ្ចប់សេវា Link Building',
-    'hero.payment_text': 'យើងទទួលការទូទាត់ប្រកបដោយសុវត្ថិភាព (ABA, Crypto, USDT)',
+    'hero.payment_text': 'យើងទទួលការទូទាត់ប្រកបដោយសុវត្ថិភាព (ABA, USDT, Crypto)',
 
     // Trust Badges
     'trust.da': 'Aged Domains DA 50+',
@@ -138,7 +138,7 @@ export const translations: Record<LanguageCode, Record<string, string>> = {
     'trust.delivery': 'ដឹកជញ្ជូនរហ័សក្នុង 48 ម៉ោង',
 
     // Packages Section
-    'pkg.badge': 'តម្លៃបោះដុំ Nexalogic • បណ្តាញ Domain ជាង 12,000+',
+    'pkg.badge': 'តម្លៃបោះដុំ Nexalogic • បណ្តាញ Domain ដ៏ធំទូលាយ',
     'pkg.title': 'ជ្រើសរើសកញ្ចប់ PBN & Backlink របស់អ្នក',
     'pkg.desc': 'តម្លៃបោះដុំផ្ទាល់សម្រាប់ Agency ជាមួយនឹងការគ្រប់គ្រង Outbound Link យ៉ាងតឹងរ៉ឹង ការ drip-feed បែបធម្មជាតិ និងអត្រា index លើសពី 95%+។ ទទួលយកគ្រប់ niche រួមទាំង Casino, iGaming & Crypto។',
     'pkg.tab_all': 'កញ្ចប់ទាំងអស់',
@@ -168,12 +168,21 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const navigate = useNavigate();
 
   const isIdRoute = location.pathname === '/id' || location.pathname.startsWith('/id/');
+  const isKmRoute = location.pathname === '/km' || location.pathname.startsWith('/km/');
 
   // Initial state based on current URL path or defaults
-  const [language, setLanguageState] = useState<LanguageCode>(isIdRoute ? 'id' : 'en');
-  const [currency, setCurrencyState] = useState<CurrencyCode>(isIdRoute ? 'IDR' : 'USD');
-  const [countryName, setCountryName] = useState<string>(isIdRoute ? 'Indonesia' : 'Global');
-  const [countryCode, setCountryCode] = useState<string>(isIdRoute ? 'ID' : 'US');
+  const [language, setLanguageState] = useState<LanguageCode>(
+    isIdRoute ? 'id' : isKmRoute ? 'km' : 'en'
+  );
+  const [currency, setCurrencyState] = useState<CurrencyCode>(
+    isIdRoute ? 'IDR' : 'USD'
+  );
+  const [countryName, setCountryName] = useState<string>(
+    isIdRoute ? 'Indonesia' : isKmRoute ? 'Cambodia' : 'Global'
+  );
+  const [countryCode, setCountryCode] = useState<string>(
+    isIdRoute ? 'ID' : isKmRoute ? 'KH' : 'US'
+  );
 
   // Sync state whenever route changes
   useEffect(() => {
@@ -182,12 +191,17 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setCurrencyState('IDR');
       setCountryName('Indonesia');
       setCountryCode('ID');
+    } else if (isKmRoute) {
+      setLanguageState('km');
+      setCurrencyState('USD');
+      setCountryName('Cambodia');
+      setCountryCode('KH');
     }
-  }, [isIdRoute]);
+  }, [isIdRoute, isKmRoute]);
 
   useEffect(() => {
-    // If user is already on a dedicated /id path, do not overwrite with geoip
-    if (window.location.pathname.startsWith('/id')) {
+    // If user is already on a dedicated /id or /km path, do not overwrite with geoip
+    if (window.location.pathname.startsWith('/id') || window.location.pathname.startsWith('/km')) {
       return;
     }
 
@@ -210,7 +224,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           if (data && data.success) {
             const cCode = (data.country_code || '').toUpperCase();
             setCountryCode(cCode);
-            setCountryName(data.country || 'Indonesia');
+            setCountryName(data.country || 'Global');
 
             if (cCode === 'KH') {
               setLanguageState('km');
@@ -242,26 +256,22 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setLanguageState(lang);
     localStorage.setItem('nexalogic_lang', lang);
 
+    const cleanPath = location.pathname.replace(/^\/(id|km)/, '') || '/';
+
     if (lang === 'id') {
       setCurrencyState('IDR');
       localStorage.setItem('nexalogic_currency', 'IDR');
-
-      // Navigate to /id URL equivalent if not already on /id
-      const currentPath = location.pathname;
-      if (!currentPath.startsWith('/id')) {
-        const newPath = currentPath === '/' ? '/id' : `/id${currentPath}`;
-        navigate(newPath);
-      }
+      const newPath = cleanPath === '/' ? '/id' : `/id${cleanPath}`;
+      if (location.pathname !== newPath) navigate(newPath);
+    } else if (lang === 'km') {
+      setCurrencyState('USD');
+      localStorage.setItem('nexalogic_currency', 'USD');
+      const newPath = cleanPath === '/' ? '/km' : `/km${cleanPath}`;
+      if (location.pathname !== newPath) navigate(newPath);
     } else {
       setCurrencyState('USD');
       localStorage.setItem('nexalogic_currency', 'USD');
-
-      // Strip /id prefix if navigating to en or km
-      const currentPath = location.pathname;
-      if (currentPath.startsWith('/id')) {
-        const newPath = currentPath.replace(/^\/id/, '') || '/';
-        navigate(newPath);
-      }
+      if (location.pathname !== cleanPath) navigate(cleanPath);
     }
   };
 

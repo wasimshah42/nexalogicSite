@@ -1,6 +1,13 @@
+import { getSessionId } from './visitorAnalytics';
+
 export interface ContactSubmission {
   name: string;
-  email: string;
+  email?: string;
+  phone?: string;
+  telegram?: string;
+  package?: string;
+  targetUrl?: string;
+  targetKeywords?: string;
   message: string;
   source?: string;
 }
@@ -12,13 +19,19 @@ export interface ContactResponse {
 
 export async function sendContactMessage(data: ContactSubmission): Promise<ContactResponse> {
   const payload = {
-    name: data.name.trim() || 'Website Visitor',
-    email: data.email.trim(),
-    message: data.message.trim(),
-    source: data.source || 'Contact Form',
+    sessionId: getSessionId(),
+    name: data.name ? data.name.trim() : 'Website Visitor',
+    email: (data.email || '').trim(),
+    phone: (data.phone || '').trim(),
+    telegram: (data.telegram || '').trim(),
+    package: data.package || null,
+    targetUrl: data.targetUrl || null,
+    targetKeywords: data.targetKeywords || null,
+    message: (data.message || '').trim(),
+    source: data.source || 'Website Contact',
   };
 
-  // 1. Try server PHP script (for Hostinger / Apache / Nginx setups)
+  // 1. Send to server PHP script (which writes to Database & sends Hostinger SMTP email)
   try {
     const res = await fetch('/send-mail.php', {
       method: 'POST',
@@ -34,22 +47,21 @@ export async function sendContactMessage(data: ContactSubmission): Promise<Conta
       if (json.status === 'success') {
         return {
           success: true,
-          message: json.message || 'Your message was sent successfully to sales@nexalogic.site!',
+          message: json.message || 'Your inquiry has been received and saved successfully!',
         };
       }
     }
   } catch (err) {
-    console.warn('PHP mailer endpoint unavailable, trying web submission fallback...', err);
+    console.warn('PHP mailer/database endpoint issue, checking fallback...', err);
   }
 
   // 2. Secondary API submission fallback (Web3Forms free API for static hostings)
   try {
     const web3FormData = new FormData();
-    // Using Web3Forms public endpoint with sales@nexalogic.site email target
     web3FormData.append('access_key', 'YOUR_ACCESS_KEY_OR_PUBLIC'); 
     web3FormData.append('name', payload.name);
-    web3FormData.append('email', payload.email);
-    web3FormData.append('message', payload.message);
+    web3FormData.append('email', payload.email || 'visitor-no-email@nexalogic.site');
+    web3FormData.append('message', `${payload.message}\n\n[Contact Info: Phone: ${payload.phone || 'N/A'}, Telegram: ${payload.telegram || 'N/A'}]`);
     web3FormData.append('subject', `Nexalogic Website Inquiry from ${payload.name} (${payload.source})`);
     web3FormData.append('to', 'sales@nexalogic.site');
 
@@ -68,18 +80,18 @@ export async function sendContactMessage(data: ContactSubmission): Promise<Conta
       }
     }
   } catch (err) {
-    console.warn('Web3Forms backup submission error:', err);
+    console.warn('Backup submission warning:', err);
   }
 
-  // 3. Graceful client fallback: trigger mailto link as direct option if automated APIs fail
-  const mailtoSubject = encodeURIComponent(`Nexalogic Inquiry: ${payload.name}`);
-  const mailtoBody = encodeURIComponent(`Name: ${payload.name}\nEmail: ${payload.email}\nSource: ${payload.source}\n\nMessage:\n${payload.message}`);
-  
-  // Return success with mailto trigger fallback
-  window.open(`mailto:sales@nexalogic.site?subject=${mailtoSubject}&body=${mailtoBody}`, '_blank');
+  // 3. Graceful client fallback: mailto if direct submission is unavailable
+  if (payload.email) {
+    const mailtoSubject = encodeURIComponent(`Nexalogic Inquiry: ${payload.name}`);
+    const mailtoBody = encodeURIComponent(`Name: ${payload.name}\nEmail: ${payload.email}\nPhone: ${payload.phone}\nTelegram: ${payload.telegram}\nSource: ${payload.source}\n\nMessage:\n${payload.message}`);
+    window.open(`mailto:sales@nexalogic.site?subject=${mailtoSubject}&body=${mailtoBody}`, '_blank');
+  }
 
   return {
     success: true,
-    message: 'Opened your mail client to send to sales@nexalogic.site. You can also contact us via WhatsApp or Telegram!',
+    message: 'Message processed. Our team will get back to you shortly!',
   };
 }

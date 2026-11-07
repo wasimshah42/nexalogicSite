@@ -14,8 +14,8 @@ export default function SEOHead() {
     document.documentElement.lang = isIndonesian ? 'id' : isKhmer ? 'km' : 'en';
 
     // Title and Description Mapping
-    let title = 'Nexalogic Technologies | Premium PBN Backlinks, Guest Posts & SEO Authority';
-    let description = "Scale your domain authority with Nexalogic's private inventory of 12,000+ aged domains. High DA/DR 70+, permanent dofollow links, strict outbound control.";
+    let title = 'Buy Premium PBN Backlinks & Authority Domains — Nexalogic';
+    let description = "Buy premium PBN backlinks & high DA/DR aged domain links from Nexalogic. Vast network of aged domains, permanent dofollow, Google-safe drip feed, and 95%+ indexation.";
 
     if (isIndonesian) {
       if (location.pathname.includes('/blog')) {
@@ -29,7 +29,21 @@ export default function SEOHead() {
         description = 'Analisis performa website, PageSpeed, dan Core Web Vitals untuk meningkatkan ranking di Google Indonesia.';
       } else {
         title = 'Nexalogic Technologies | Jasa Backlink PBN Murah, Aged Domains & SEO Authority Indonesia';
-        description = 'Jasa backlink PBN berkualitas & bergaransi dari Nexalogic Technologies. 12.000+ aged domains, DA/DR 40+ hingga 90+, aman Google, drip-feed alami, terima niche judi/casino/crypto & general.';
+        description = 'Jasa backlink PBN berkualitas & bergaransi dari Nexalogic Technologies. Jaringan luas aged domains, DA/DR 40+ hingga 90+, aman Google, drip-feed alami, terima niche judi/casino/crypto & general.';
+      }
+    } else if (isKhmer) {
+      if (location.pathname.includes('/blog')) {
+        title = 'ប្លុក SEO & យុទ្ធសាស្ត្រ Backlink PBN កម្ពុជា | Nexalogic Technologies';
+        description = 'ស្វែងយល់ពីយុទ្ធសាស្ត្រ Link Building ទំនើប គោលការណ៍សុវត្ថិភាព PBN និងបច្ចេកទេសបង្កើនចំណាត់ថ្នាក់ Google សម្រាប់គេហទំព័រកម្ពុជា។';
+      } else if (location.pathname.includes('/portfolio')) {
+        title = 'ករណីសិក្សា SEO & ផលប័ត្រ Backlink កម្ពុជា | Nexalogic Technologies';
+        description = 'ស្វែងយល់ពីរបៀបដែល Nexalogic Authority Links ជួយឱ្យគេហទំព័រសម្រេចបានចំណាត់ថ្នាក់លេខ 1 ប្រកបដោយនិរន្តរភាពលើ Google ។';
+      } else if (location.pathname.includes('/tools/pagespeed-checker')) {
+        title = 'ឧបករណ៍ពិនិត្យល្បឿនគេហទំព័រ & Core Web Vitals ដោយឥតគិតថ្លៃ | Nexalogic Tools';
+        description = 'ឧបករណ៍ឥតគិតថ្លៃដើម្បីធ្វើតេស្តល្បឿនគេហទំព័រ និង Core Web Vitals សម្រាប់ទីផ្សារកម្ពុជា។';
+      } else {
+        title = 'Nexalogic Technologies | សេវាកម្ម Backlink PBN & Link Building គុណភាពខ្ពស់ កម្ពុជា';
+        description = 'ទិញ backlink PBN និង link building លំដាប់ខ្ពស់ពី Nexalogic Technologies ។ Aged domains DA/DR 40+ ដល់ 90+, ទទួលយក Casino, iGaming & Crypto, សុវត្ថិភាព Google 100% ។';
       }
     } else {
       if (location.pathname.includes('/blog')) {
@@ -38,6 +52,9 @@ export default function SEOHead() {
       } else if (location.pathname.includes('/portfolio')) {
         title = 'SEO Case Studies & Backlink Portfolio | Nexalogic Technologies';
         description = 'Discover how Nexalogic authority links helped agencies and businesses achieve sustainable #1 rankings on Google.';
+      } else if (location.pathname.includes('/tools/pagespeed-checker')) {
+        title = 'Website Speed & Core Web Vitals Checker | Nexalogic Tools';
+        description = 'Free tool to test website performance, page load speed, and Core Web Vitals metrics.';
       }
     }
 
